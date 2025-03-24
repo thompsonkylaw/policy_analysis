@@ -73,34 +73,40 @@ const Chat = () => {
           
           <div className="chat-container">
             {messages.map((msg, index) => (
-              <div
+                <div
                 key={index}
                 className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`}
-              >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={MarkdownComponents}
                 >
-                  {msg.content}
+                <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={MarkdownComponents}
+                >
+                    {msg.content}
                 </ReactMarkdown>
-              </div>
+                </div>
             ))}
+            
             {isLoading && (
-              <div className="loading-text">AI 正在分析中...</div>
+            <div className="loading-text">
+                產品比較助手 正在分析中
+                <span className="dot">.</span>
+                <span className="dot">.</span>
+                <span className="dot">.</span>
+            </div>
             )}
             <div ref={messagesEndRef} />
           </div>
     
           <div className="input-container">
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
+          <form onSubmit={handleSubmit}>
+            <textarea
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="輸入您的問題..."
                 disabled={isLoading}
                 className="message-input"
-              />
+                rows={3} // Set initial number of rows
+            />
               <button type="submit" disabled={isLoading}>
                 傳送
               </button>
