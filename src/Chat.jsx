@@ -27,7 +27,7 @@ const Chat = () => {
 
         try {
             // const response = await fetch('http://localhost:8002/api/chat', {
-            const response = await fetch('http://fastapi-production-98d5.up.railway.app/api/chat', {    
+            const response = await fetch('https://fastapi-production-98d5.up.railway.app/api/chat', {    
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
