@@ -26,8 +26,7 @@ const Chat = () => {
         setIsLoading(true);
 
         try {
-            // const response = await fetch('http://localhost:8002/api/chat', {
-            const response = await fetch('https://fastapi-production-98d5.up.railway.app/api/chat', {    
+            const response = await fetch('http://localhost:8002/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,61 +65,51 @@ const Chat = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-4 h-screen flex flex-col">
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">保險產品比較助手</h1>
-                <button
-                    onClick={resetChat}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-                >
-                    重置對話
-                </button>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto mb-4 bg-gray-50 p-4 rounded-lg shadow-inner">
+        <div className="App">
+          <div className="header">
+            <h1>保險產品比較助手</h1>
+          </div>
+          
+          <div className="chat-container">
             {messages.map((msg, index) => (
-                <div
-                    key={index}
-                    className={`mb-4 p-4 rounded-lg ${
-                    msg.role === 'user' 
-                    ? 'bg-blue-100 border-blue-300 ml-auto' 
-                    : 'bg-white border-gray-200 shadow-sm mr-auto'
-                    } prose max-w-none`} // 将样式移动到这里
-                    style={{ maxWidth: '90%' }}
+              <div
+                key={index}
+                className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`}
+              >
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={MarkdownComponents}
                 >
-                    <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={MarkdownComponents}
-                    >
-                    {msg.content}
-                    </ReactMarkdown>
-                </div>
-                ))}
-                {isLoading && (
-                    <div className="text-gray-500 italic p-4">AI 正在分析中...</div>
-                )}
-                <div ref={messagesEndRef} />
-            </div>
-
-            <form onSubmit={handleSubmit} className="flex gap-2">
-                <input
-                    type="text"
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="輸入您的問題..."
-                    className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    disabled={isLoading}
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                    disabled={isLoading}
-                >
-                    傳送
-                </button>
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="loading-text">AI 正在分析中...</div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+    
+          <div className="input-container">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder="輸入您的問題..."
+                disabled={isLoading}
+              />
+              <button type="submit" disabled={isLoading}>
+                傳送
+              </button>
+              <button type="button" onClick={resetChat}>
+                重置對話
+              </button>
             </form>
+          </div>
         </div>
-    );
-};
+      );
+    };
+
 
 export default Chat;

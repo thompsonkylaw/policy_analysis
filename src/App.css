@@ -1,41 +1,149 @@
+/* App.css */
 .App {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+  background: #2d2d2d;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  color: #7fbfff;
+  font-size: 1.8rem;
+  margin: 0;
 }
 
 .chat-container {
-  border: 1px solid #ccc;
-  padding: 10px;
-  height: 400px;
+  flex: 1;
   overflow-y: auto;
-  margin-bottom: 20px;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #1f1f1f;
+  border-radius: 8px;
 }
 
 .message {
-  margin: 10px 0;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 75%;
+  color: #e0e0e0;
 }
 
 .message.user {
-  text-align: right;
-  color: #007bff;
+  background: #2a4365;
+  margin-left: auto;
 }
 
 .message.assistant {
-  text-align: left;
-  color: #28a745;
+  background: #333333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-right: auto;
 }
 
 .input-container {
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
-input {
-  flex-grow: 1;
-  padding: 5px;
+.input-container form {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 800px; /* Increased from 600px */
 }
 
-button {
-  padding: 5px 10px;
+.input-container input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #404040;
+  color: #ffffff;
+  min-width: 300px; /* Added minimum width */
+}
+
+.input-container input::placeholder {
+  color: #a0a0a0;
+}
+
+.input-container button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.input-container button[type="submit"] {
+  background: #2563eb;
+  color: white;
+}
+
+.input-container button[type="button"] {
+  background: #dc2626;
+  color: white;
+}
+
+.input-container button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loading-text {
+  text-align: center;
+  color: #a0a0a0;
+  font-style: italic;
+  padding: 1rem;
+}
+
+/* Dark mode table styles */
+.markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.markdown-table td, .markdown-table th {
+  padding: 0.5rem;
+  border: 1px solid #4a4a4a;
+}
+
+.markdown-table th {
+  background-color: #2d2d2d;
+}
+
+.markdown-table td {
+  background-color: #333333;
+}
+
+/* Prose styling adjustments */
+.prose {
+  max-width: 100%;
+}
+
+.prose p {
+  margin: 0.5em 0;
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.5em;
+}
+
+.prose code {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  color: #7dd3fc;
 }
