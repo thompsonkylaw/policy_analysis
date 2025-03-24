@@ -98,6 +98,7 @@ const Chat = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="輸入您的問題..."
                 disabled={isLoading}
+                className="message-input"
               />
               <button type="submit" disabled={isLoading}>
                 傳送

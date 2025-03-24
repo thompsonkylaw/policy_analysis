@@ -52,3 +52,48 @@ body {
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
+
+/* Updated CSS */
+.message-input {
+  width: 100%;
+  min-height: 100px;
+  padding: 1rem;
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  background: #404040;
+  color: #ffffff;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+}
+
+.message-input::placeholder {
+  color: #a0a0a0;
+  font-size: 1rem;
+}
+
+.button-container {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.button-container button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  min-width: 120px;
+}
+
+/* Adjust existing CSS */
+.input-container form {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-container {
+  /* Add margin-bottom to create space between chat and input */
+  margin-bottom: 1.5rem;
+}
