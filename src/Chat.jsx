@@ -28,7 +28,8 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8003/api/ds', {
+      // const response = await fetch('http://localhost:8003/api/ds', {
+      const response = await fetch('https://fastapi-production-98d5.up.railway.app/api/ds', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newMessages),
