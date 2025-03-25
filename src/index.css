@@ -343,35 +343,51 @@ div .mx-auto .App{
   width:1109px;
  }
  
- .copy-button-container {
+ .pdf-button-container {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #4a4a4a;
+  border-top: 1px solid #eee;
   text-align: right;
 }
 
-.copy-button {
-  background: #4CAF50;
+.pdf-button {
+  background: #2196F3;
   color: white;
   border: none;
   padding: 8px 20px;
   border-radius: 20px;
   cursor: pointer;
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   transition: all 0.3s ease;
 }
 
-.copy-button:hover {
-  background: #45a049;
+.pdf-button:hover {
+  background: #1976D2;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.copy-button:active {
+.pdf-button:active {
   transform: translateY(0);
   box-shadow: none;
 }
 
-.App div textarea{
-  color:#ecf0f1;
- }
+.loading-text {
+  color: #666;
+  padding: 1rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.dot {
+  animation: dotPulse 1.4s infinite;
+}
+
+@keyframes dotPulse {
+  0%, 20% { opacity: 0.2; }
+  50% { opacity: 1; }
+  80%, 100% { opacity: 0.2; }
+}

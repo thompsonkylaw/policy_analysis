@@ -14,12 +14,15 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
-    "jspdf": "^3.0.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "perplexity_frontend": "file:",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5",
     "vite-react-typescript-starter": "file:"
   },
   "devDependencies": {
