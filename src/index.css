@@ -391,3 +391,7 @@ div .mx-auto .App{
   50% { opacity: 1; }
   80%, 100% { opacity: 0.2; }
 }
+
+.App div textarea{
+  color:#ecf0f1;
+ }
