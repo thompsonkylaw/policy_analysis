@@ -150,9 +150,21 @@ body {
 }
 
 .header h1 {
-  color: #7fbfff;
+  color: #ffffff;
   font-size: 1.8rem;
   margin: 0;
+}
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #009739; /* Adjust color to match your design */
+  
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
 /* Adjust existing chat container */
@@ -331,3 +343,35 @@ div .mx-auto .App{
   width:1109px;
  }
  
+ .copy-button-container {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #4a4a4a;
+  text-align: right;
+}
+
+.copy-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.App div textarea{
+  color:#ecf0f1;
+ }
