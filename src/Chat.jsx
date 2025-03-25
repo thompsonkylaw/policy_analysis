@@ -192,7 +192,37 @@ const Chat = () => {
       doc.text(`頁面 ${i}/${totalPages}`, 190 - 10, 287, { align: 'right' });
     }
 
-    doc.save('保險比較報告.pdf');
+    const getHongKongTimestamp = () => {
+      const now = new Date();
+      
+      // Format for Hong Kong time
+      const options = {
+        timeZone: 'Asia/Hong_Kong',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+    
+      // Get formatted parts
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const [
+        { value: month },,
+        { value: day },,
+        { value: year },,
+        { value: hour },,
+        { value: minute },,
+        { value: second }
+      ] = formatter.formatToParts(now);
+    
+      return `${year}${month}${day}_${hour}${minute}${second}`;
+    };
+    
+    // Modify the save line in generatePDF
+    doc.save(`保險比較報告_${getHongKongTimestamp()}.pdf`);
   };
 
   const scrollToBottom = () => {
@@ -214,7 +244,7 @@ const Chat = () => {
 
     try {
       // const response = await fetch('http://localhost:8003/api/ds', {
-      const response = await fetch('http://fastapi-production-98d5.up.railway.app/api/ds', {
+      const response = await fetch('https://fastapi-production-98d5.up.railway.app/api/ds', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newMessages),
