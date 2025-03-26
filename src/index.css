@@ -395,3 +395,21 @@ div .mx-auto .App{
 .App div textarea{
   color:#ecf0f1;
  }
+
+ .api-switch-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 4px 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.api-switch-container .MuiFormControlLabel-root {
+  margin-right: 0;
+}
+
+.api-switch-container .MuiFormControlLabel-label {
+  font-size: 0.875rem;
+  color: #666;
+}
