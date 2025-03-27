@@ -7,11 +7,90 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const Chat = () => {
+  const apptitle = "保單分析助手";
+  const secondUserMessage = 'EXCEL格式';
+  const useModeSwitch = true;
+  const systemPrompt = "你現在是一個專業保險從業員, 請分析上傳的 message 文字 ,用繁體中文 清楚 分行分段 顯示結果. 日期用1900年10月10日格式表示\
+                        保單基本資訊：\
+                        保險公司:\
+                        Policy Owner 保單權益人:\
+                        Life Assured 受保人\
+                        Policy Number 保單號碼\
+                        Commencing Date 首期保費日/生效年份:\
+                        Currency 貨幣:\
+                        Payment Mode / Method 繳費方式\
+                        如有幾個計劃名稱, 包括附加契約, 請全部列出 計劃有中文,請用中文顯示計劃,如果醫療計劃請列明病房等級. 和有沒有其他附加詳情\
+                        名稱舉例如下 :\
+                        保障計劃摘要：\
+                        1\
+                        保障計劃名稱\
+                        保障計劃保額\
+                        保障期\
+                        保費期滿日\
+                        每年保費\
+                        附加詳情\
+                        2\
+                        保障計劃名稱\
+                        保障計劃保額\
+                        保障期\
+                        保費期滿日\
+                        每年保費\
+                        附加詳情\
+                        3(如有更多保障計劃名稱. 請全部都需要列明)\
+                        保障計劃名稱\
+                        保障計劃保額\
+                        保障期\
+                        保費期滿日\
+                        每年保費\
+                        附加詳情\
+                        退保價值說明:\
+                        如資料有退保價值/退保發還金額說明,請列出以下的退保價值或退保發還金額保證+非保證=總額舉例如下: \
+                        第一行或現今的保單年度終結總額:US/HK $\
+                        At age 歲數 65 或66 退保價值或退保發還金額總額: US/HK $\
+                        At age 歲數 75 或76 退保價值或退保發還金額總額: US/HK $\
+                        At age 歲數 85 或86 退保價值或退保發還金額總額: US/HK $\
+                        At age 歲數 95 或96 退保價值或退保發還金額總額: US/HK $\
+                        整份保單現繳保費每年保費共多少:\
+                        其他有關保險的重要資料:\
+                        用繁體中文 清楚 分行分段 顯示結果";
+  // const systemPrompt2 = "";                        
+  const systemPrompt2 = "我想將\
+                        message\
+                        資訊整理成Excel格式，您可以幫我把保單基本資訊、保障計劃信息和退保價值說明轉換成Excel表格嗎？ 格式如下: \
+                        EXCEL 不能用行排列,因為打橫畫面看不到\
+                        如modified_content\
+                        有多個保障計劃名稱,每一個保障計劃名稱, 都必須顯示一個表格\
+                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,次序如下:\
+                        保單類型\
+                        保險公司\
+                        計劃名稱\
+                        保單號碼\
+                        主附加計劃\
+                        保費繳付年期\
+                        保單日期\
+                        保費期滿日\
+                        保額\
+                        保障期\
+                        繳費形式\
+                        保單貨幣\
+                        附加詳情\
+                        如資料有退保價值說明,保證+非保證=總額請列出格式如下:\
+                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,次序如下:\
+                        現保單價值：: US/HK $\
+                        65或66歲保單價值: US/HK $\
+                        75或76歲保單價值: US/HK $\
+                        85或86歲保單價值: US/HK $\
+                        95或96歲保單價值: US/HK $\
+                        整份保單現繳保費每年保費共多少:\
+                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,次序如下:\
+                        現繳保費每年\
+                        其他有關保險的重要資料";
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [fontData, setFontData] = useState(null);
   const [useChatApi, setUseChatApi] = useState(false);
+  const [isFirstResponse, setIsFirstResponse] = useState(true);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -32,15 +111,187 @@ const Chat = () => {
   }, []);
 
   const processContent = (content) => {
-    // ... keep the existing processContent function unchanged ...
+    const lines = content.split('\n');
+    const blocks = [];
+    let currentBlock = { type: 'text', data: [] };
+    let inTable = false;
+
+    lines.forEach((line) => {
+      const isTableLine = line.trim().startsWith('|') && line.includes('|', 1);
+
+      if (isTableLine) {
+        if (!inTable) {
+          if (currentBlock.data.length > 0) {
+            blocks.push({ ...currentBlock, data: currentBlock.data.join('\n') });
+          }
+          currentBlock = { type: 'table', data: [] };
+          inTable = true;
+        }
+        currentBlock.data.push(line.trim());
+      } else {
+        if (inTable) {
+          blocks.push(currentBlock);
+          currentBlock = { type: 'text', data: [] };
+          inTable = false;
+        }
+        currentBlock.data.push(line);
+      }
+    });
+
+    if (currentBlock.data.length > 0) {
+      blocks.push({
+        ...currentBlock,
+        data: currentBlock.type === 'table' 
+          ? currentBlock.data 
+          : currentBlock.data.join('\n'),
+      });
+    }
+
+    return blocks;
   };
 
   const parseTable = (tableLines) => {
-    // ... keep the existing parseTable function unchanged ...
+    if (tableLines.length < 2) return { headers: [], body: [] };
+    
+    const filteredLines = tableLines.filter(line => !line.match(/^[\s|:-]+$/));
+    const headers = filteredLines[0]
+      .split('|')
+      .slice(1, -1)
+      .map(c => c.trim());
+    const body = filteredLines.slice(1).map(line =>
+      line.split('|')
+        .slice(1, -1)
+        .map(c => c.trim())
+    );
+
+    return { headers, body };
   };
 
   const generatePDF = (content) => {
-    // ... keep the existing generatePDF function unchanged ...
+    if (!fontData) {
+      alert('字體正在加載中，請稍後再試');
+      return;
+    }
+
+    const doc = new jsPDF({
+      orientation: 'p',
+      unit: 'mm',
+      format: 'a4',
+      compress: true,
+    });
+
+    doc.addFileToVFS('NotoSansCJKtc-Regular.ttf', fontData);
+    doc.addFont('NotoSansCJKtc-Regular.ttf', 'NotoSansCJKtc', 'normal');
+    doc.setFont('NotoSansCJKtc');
+
+    const blocks = processContent(content);
+    let yPosition = 20;
+
+    const chineseSplit = (text, maxWidth = 190) => {
+      const lines = [];
+      let currentLine = '';
+      
+      text.split('').forEach((char) => {
+        const testLine = currentLine + char;
+        const testWidth = doc.getTextWidth(testLine);
+        if (testWidth > maxWidth) {
+          lines.push(currentLine);
+          currentLine = char;
+        } else {
+          currentLine = testLine;
+        }
+      });
+      lines.push(currentLine);
+      return lines;
+    };
+
+    blocks.forEach((block) => {
+      if (block.type === 'text') {
+        const cleanedText = block.data
+          .replace(/#{1,6}\s?/g, '')
+          .replace(/\*\*/g, '')
+          .replace(/\*/g, '')
+          .replace(/`{3}[\s\S]*?`{3}/g, '')
+          .replace(/-\s/g, '• ')
+          .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+          .replace(/(?:\\[rn]|[\r\n]+)+/g, '\n')
+          .replace(/<\/?[^>]+(>|$)/g, '');
+
+        cleanedText.split('\n').forEach((paragraph) => {
+          const lines = chineseSplit(paragraph);
+          lines.forEach((line) => {
+            if (yPosition > 280) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.setFontSize(8);
+            doc.text(line, 15, yPosition);
+            yPosition += 4;
+          });
+          yPosition += 4;
+        });
+      } else if (block.type === 'table') {
+        const { headers, body } = parseTable(block.data);
+        
+        if (headers.length > 0 && body.length > 0) {
+          autoTable(doc, {
+            startY: yPosition,
+            head: [headers],
+            body: body,
+            styles: {
+              font: 'NotoSansCJKtc',
+              fontSize: 8,
+              cellPadding: 2,
+              valign: 'middle',
+              overflow: 'linebreak',
+            },
+            headStyles: {
+              fillColor: [41, 128, 185],
+              textColor: 255,
+              fontStyle: 'normal'
+            },
+            margin: { left: 15 },
+            theme: 'grid',
+            didDrawPage: (data) => {
+              yPosition = data.cursor.y + 10;
+            }
+          });
+        }
+      }
+    });
+
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.text(`頁面 ${i}/${totalPages}`, 190 - 10, 287, { align: 'right' });
+    }
+
+    const getHongKongTimestamp = () => {
+      const now = new Date();
+      const options = {
+        timeZone: 'Asia/Hong_Kong',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const [
+        { value: month },,
+        { value: day },,
+        { value: year },,
+        { value: hour },,
+        { value: minute },,
+        { value: second }
+      ] = formatter.formatToParts(now);
+      return `${year}${month}${day}_${hour}${minute}${second}`;
+    };
+
+    doc.save(`保單分析報告_${getHongKongTimestamp()}.pdf`);
   };
 
   const scrollToBottom = () => {
@@ -56,19 +307,23 @@ const Chat = () => {
     if (!inputMessage.trim()) return;
 
     const newMessages = [...messages, { role: 'user', content: inputMessage }];
+    const messagesToSend = [
+      { role: 'system', content: systemPrompt },
+      ...newMessages,
+    ];
     setMessages(newMessages);
     setInputMessage('');
     setIsLoading(true);
 
     try {
-      const apiUrl = useChatApi 
-        ? 'https://fastapi-production-98d5.up.railway.app/api/chat'
-        : 'https://fastapi-production-98d5.up.railway.app/api/ds';
+      const apiUrl = useChatApi
+        ? 'http://localhost:8003/api/chat/policy_analysis'
+        : 'http://localhost:8003/api/ds/policy_analysis';
 
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newMessages),
+        body: JSON.stringify(messagesToSend),
       });
 
       if (!response.ok) {
@@ -77,7 +332,33 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      setMessages([...newMessages, { role: 'assistant', content: data.message }]);
+      const assistantMessage = { role: 'assistant', content: data.message };
+      const updatedMessages = [...newMessages, assistantMessage];
+      setMessages(updatedMessages);
+
+      if (isFirstResponse && systemPrompt2 !== '') {
+        setIsFirstResponse(false);
+        const followUpMessage = { role: 'user', content: secondUserMessage };
+        const messagesWithFollowUp = [...updatedMessages, followUpMessage];
+        const secondMessagesToSend = [
+          { role: 'system', content: systemPrompt2 },
+          ...messagesWithFollowUp,
+        ];
+        const secondResponse = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(secondMessagesToSend),
+        });
+
+        if (!secondResponse.ok) {
+          const errorData = await secondResponse.json();
+          throw new Error(errorData.detail || 'Network response was not ok');
+        }
+
+        const secondData = await secondResponse.json();
+        const secondAssistantMessage = { role: 'assistant', content: secondData.message };
+        setMessages([...messagesWithFollowUp, secondAssistantMessage]);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(`Error: ${error.message}`);
@@ -88,6 +369,7 @@ const Chat = () => {
 
   const resetChat = () => {
     setMessages([]);
+    setIsFirstResponse(true);
   };
 
   const MarkdownComponents = {
@@ -110,7 +392,7 @@ const Chat = () => {
         >
           <ArrowBackIcon />
         </IconButton>
-        <h1>保險產品比較助手</h1>
+        <h1>{apptitle}</h1>
       </div>
 
       <div className="chat-container">
@@ -135,7 +417,7 @@ const Chat = () => {
         ))}
         {isLoading && (
           <div className="loading-text">
-            產品比較助手 正在分析中
+            保單分析助手 正在分析中
             <span className="dot">.</span>
             <span className="dot">.</span>
             <span className="dot">.</span>
@@ -146,23 +428,25 @@ const Chat = () => {
 
       <div className="input-container">
         <form onSubmit={handleSubmit}>
-          <div className="api-switch-container">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={useChatApi}
-                  onChange={(e) => setUseChatApi(e.target.checked)}
-                  color="primary"
-                />
-              }
-              label="使用聊天模式"
-              labelPlacement="start"
-            />
-          </div>
+          {useModeSwitch && (
+            <div className="api-switch-container">
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={useChatApi}
+                    onChange={(e) => setUseChatApi(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="使用PPXTY"
+                labelPlacement="start"
+              />
+            </div>
+          )}
           <textarea
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="輸入您的問題..."
+            placeholder="請用Ctrl-V 貼上你的保單資料..."
             disabled={isLoading}
             className="message-input"
             rows={3}
