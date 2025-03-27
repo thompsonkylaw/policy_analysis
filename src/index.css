@@ -413,3 +413,67 @@ div .mx-auto .App{
   font-size: 0.875rem;
   color: #666;
 }
+
+/* App.css */
+
+/* Responsive styles for tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .chat-container {
+    padding: 1rem;
+    margin: 1rem;
+    width: 90%; /* Maintain readable width */
+  }
+  .message {
+    max-width: 80%; /* Slightly wider messages for readability */
+  }
+  .input-container form {
+    max-width: 700px; /* Adjust form width for tablets */
+  }
+  .header h1 {
+    font-size: 1.6rem; /* Slightly larger header text */
+  }
+}
+
+/* Responsive styles for iPhones (max-width: 767px) */
+@media (max-width: 767px) {
+  .chat-container {
+    border: none; /* Remove border (frame) */
+    box-shadow: none; /* Remove shadow (frame) */
+    padding: 0.5rem; /* Reduce padding */
+    margin: 0.5rem; /* Reduce margin */
+    width: 100%; /* Full width on small screens */
+    border-radius: 0; /* Remove rounded corners for a cleaner look */
+  }
+  .message {
+    max-width: 100%; /* Full width for messages */
+    padding: 1rem; /* Consistent padding */
+  }
+  .header {
+    font-size: 1.2rem; /* Smaller header text */
+    padding: 10px; /* Reduce header padding */
+  }
+  .input-container form {
+    flex-direction: column; /* Stack form elements vertically */
+    max-width: 100%; /* Full width form */
+    gap: 1rem; /* Add spacing between stacked elements */
+  }
+  .input-container button {
+    width: 100%; /* Full width buttons */
+    padding: 0.7rem 1rem; /* Adjust button padding */
+  }
+  .message-input {
+    min-height: 50px; /* Slightly smaller input area */
+    max-height: 50px; /* Limit height */
+    font-size: 14px; /* Smaller text for smaller screens */
+  }
+  .pdf-button-container {
+    text-align: center; /* Center the PDF button */
+  }
+  .pdf-button {
+    padding: 6px 16px; /* Slightly smaller button */
+    font-size: 0.8rem; /* Smaller text */
+  }
+  .api-switch-container {
+    justify-content: center; /* Center the switch */
+  }
+}

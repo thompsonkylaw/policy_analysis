@@ -10,6 +10,14 @@ const Chat = () => {
   const apptitle = "保單分析助手";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
+  const useServer = true;
+  let server="";
+  if (useServer) {
+     server = "https://fastapi-production-98d5.up.railway.app/";
+  }
+  else{
+     server = "http://localhost:8003/";
+  }
   const systemPrompt = "你現在是一個專業保險從業員, 請分析上傳的 message 文字 ,用繁體中文 清楚 分行分段 顯示結果. 日期用1900年10月10日格式表示\
                         保單基本資訊：\
                         保險公司:\
@@ -317,8 +325,8 @@ const Chat = () => {
 
     try {
       const apiUrl = useChatApi
-        ? 'http://localhost:8003/api/chat/policy_analysis'
-        : 'http://localhost:8003/api/ds/policy_analysis';
+        ? server+'api/ppxty'
+        : server+ 'api/ds';
 
       const response = await fetch(apiUrl, {
         method: 'POST',
