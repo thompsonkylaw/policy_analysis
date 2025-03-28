@@ -7,7 +7,7 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const Chat = () => {
-  const apptitle = "保單分析助手x";
+  const apptitle = "保單分析助手";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
   const useServer = true;
