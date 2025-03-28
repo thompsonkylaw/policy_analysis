@@ -11,7 +11,7 @@ const Chat = () => {
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
   const useServer = true;
-  const firstPromptModel = "deepseek-reasoner";
+  const firstPromptModel = "deepseek-chat";
   const secondPromptModel = "deepseek-chat";
   let server="";
   if (useServer) {
