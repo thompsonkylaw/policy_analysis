@@ -7,10 +7,10 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const Chat = () => {
-  const apptitle = "保單分析助手";
+  const apptitle = "保單分析助手x";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
-  const useServer = false;
+  const useServer = true;
   const firstPromptModel = "deepseek-reasoner";
   const secondPromptModel = "deepseek-chat";
   let server="";
