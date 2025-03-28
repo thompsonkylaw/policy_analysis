@@ -10,7 +10,9 @@ const Chat = () => {
   const apptitle = "保單分析助手";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
-  const useServer = true;
+  const useServer = false;
+  const firstPromptModel = "deepseek-reasoner";
+  const secondPromptModel = "deepseek-chat";
   let server="";
   if (useServer) {
      server = "https://fastapi-production-98d5.up.railway.app/";
@@ -328,11 +330,14 @@ const Chat = () => {
         ? server+'api/ppxty'
         : server+ 'api/ds';
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(messagesToSend),
-      });
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: messagesToSend,
+            model: useChatApi ? 'r1-1776' : firstPromptModel
+          }),
+        });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -355,7 +360,10 @@ const Chat = () => {
         const secondResponse = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(secondMessagesToSend),
+          body: JSON.stringify({
+            messages: secondMessagesToSend,
+            model: useChatApi ? 'r1-1776' : secondPromptModel
+          }),
         });
 
         if (!secondResponse.ok) {
