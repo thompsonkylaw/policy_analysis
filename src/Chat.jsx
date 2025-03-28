@@ -7,12 +7,14 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const Chat = () => {
-  const apptitle = "保單分析助手";
+  const apptitle = "保單分析助手Grok2";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
-  const useServer = true;
-  const firstPromptModel = "deepseek-chat";
-  const secondPromptModel = "deepseek-chat";
+  const useServer = false;
+  // const firstPromptModel = "deepseek-chat";
+  // const secondPromptModel = "deepseek-chat";
+  const firstPromptModel  = "grok-2-latest";
+  const secondPromptModel = "grok-2-latest";
   let server="";
   if (useServer) {
      server = "https://fastapi-production-98d5.up.railway.app/";
@@ -328,7 +330,8 @@ const Chat = () => {
     try {
       const apiUrl = useChatApi
         ? server+'api/ppxty'
-        : server+ 'api/ds';
+        // : server+ 'api/ds';
+        : server+ 'api/grok2';
 
         const response = await fetch(apiUrl, {
           method: 'POST',
