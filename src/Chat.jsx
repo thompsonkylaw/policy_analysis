@@ -10,7 +10,7 @@ const Chat = () => {
   const apptitle = "保單分析助手Grok2";
   const secondUserMessage = 'EXCEL格式';
   const useModeSwitch = true;
-  const useServer = false;
+  const useServer = true;
   // const firstPromptModel = "deepseek-chat";
   // const secondPromptModel = "deepseek-chat";
   const firstPromptModel  = "grok-2-latest";
