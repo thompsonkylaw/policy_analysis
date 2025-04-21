@@ -7,14 +7,14 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const Chat = () => {
-  const apptitle = "保單分析助手Grok2";
+  const apptitle = "保單分析助手 AIM AI";
   const secondUserMessage = 'EXCEL格式';
-  const useModeSwitch = true;
+  const useModeSwitch = false;
   const useServer = true;
-  // const firstPromptModel = "deepseek-chat";
-  // const secondPromptModel = "deepseek-chat";
-  const firstPromptModel  = "grok-2-latest";
-  const secondPromptModel = "grok-2-latest";
+  const firstPromptModel = "deepseek-reasoner";
+  const secondPromptModel = "deepseek-chat";
+  // const firstPromptModel  = "grok-2-latest";
+  // const secondPromptModel = "grok-2-latest";
   let server="";
   if (useServer) {
      server = "https://fastapi-production-98d5.up.railway.app/";
@@ -72,7 +72,7 @@ const Chat = () => {
                         EXCEL 不能用行排列,因為打橫畫面看不到\
                         如modified_content\
                         有多個保障計劃名稱,每一個保障計劃名稱, 都必須顯示一個表格\
-                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,次序如下:\
+                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,就算欠所需資料,每一欄個欄位都不能少,次序如下:\
                         保單類型\
                         保險公司\
                         計劃名稱\
@@ -87,7 +87,7 @@ const Chat = () => {
                         保單貨幣\
                         附加詳情\
                         如資料有退保價值說明,保證+非保證=總額請列出格式如下:\
-                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答,次序如下:\
+                        EXCEL的第一欄(column) 打直順序,一定要打直排欄(column),第二欄(column)是回答, 次序如下:\
                         現保單價值：: US/HK $\
                         65或66歲保單價值: US/HK $\
                         75或76歲保單價值: US/HK $\
@@ -330,8 +330,8 @@ const Chat = () => {
     try {
       const apiUrl = useChatApi
         ? server+'api/ppxty'
-        // : server+ 'api/ds';
-        : server+ 'api/grok2';
+        : server+ 'api/ds';
+        // : server+ 'api/grok2';
 
         const response = await fetch(apiUrl, {
           method: 'POST',

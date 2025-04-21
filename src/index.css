@@ -477,3 +477,69 @@ div .mx-auto .App{
     justify-content: center; /* Center the switch */
   }
 }
+
+/* App */
+div .px-4 .App{
+ 
+  padding-bottom:16px;
+  transform:translatex(0px) translatey(0px);
+ }
+ 
+ /* Text Area */
+ .App div textarea{
+  height:135px;
+  overflow:auto;
+  max-width:76%;
+ }
+ 
+ /* Form Division */
+ .App div form{
+  /* min-height:0px; */
+ }
+ 
+ /* Button */
+ .App form button{
+  transform:translatex(0px) translatey(0px);
+ }
+ 
+ /* Division */
+ .App form div{
+  padding-bottom:7px;
+  padding-top:13px;
+ }
+ 
+ @media (min-width:768px){
+ 
+  /* Text Area */
+  .App div textarea{
+   min-height:0px;
+   max-height:135px;
+  }
+  
+  /* Button */
+  .App form button{
+   width:153px;
+  }
+  
+   
+  /* Form Division */
+  .App div form{
+   max-width:847px;
+  }
+  
+ }
+ h3{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+h4 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #ffffff;
+}
